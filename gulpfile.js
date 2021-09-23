@@ -22,9 +22,9 @@ function browsersync() {
         server: { baseDir: 'dist/'},
     })
 
-    watch('src/**.html', series(html)).on('change', sync.reload)
-    watch('src/scss/**.scss', series(css)).on('change', sync.reload)
-    watch('src/js/**.js', series(scripts)).on('change', sync.reload)
+    watch('src/**/*.html', series(html)).on('change', sync.reload)
+    watch('src/scss/**/*.scss', series(css)).on('change', sync.reload)
+    watch('src/js/**/*.js', series(scripts)).on('change', sync.reload)
 }
 
 function html() {
