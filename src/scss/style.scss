@@ -1,0 +1,181 @@
+@import url('https://fonts.googleapis.com/css?family=Khula&display=swap');
+
+*,
+*::before,
+*::after { box-sizing: border-box;}
+
+h1, h2, h3, h4, h5, h6 { margin: 0;}
+
+body {
+  color: #fff;
+  font-family: 'Khula', sans-serif;
+  height: 100vh;
+  overflow: hidden;
+  margin: 0;
+  text-align: center;
+}
+
+
+/* ==================First screen==================== */
+a {
+  color: #fff;
+  text-decoration: none;
+
+  &:hover {color: $color-hover;}
+}
+
+.start { font-size: 1.5rem;}
+
+h1 {
+  line-height: 1.4;
+  font-size: 4rem;
+  margin-bottom: 40px;
+}
+
+.selection__title {
+  line-height: 1.4;
+  font-size: 3rem;
+}
+
+%screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  background: linear-gradient(90deg, #29323C 0%, #485563 100%);
+}
+
+.screen {
+  @extend %screen;
+
+  &.up {
+    margin-top: -100vh;
+    transition: margin 0.5s ease-out;
+  }
+
+  &.reset {
+    transform: translateY(100vh);
+    transition: transform 0.5s ease-out;
+  }
+}
+
+.result {
+  @extend %screen;
+  display: none;
+}
+
+
+/* ========================Settings screen===================== */
+.settings {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-basis: 400px;
+  width: 55%;
+  max-width: 650px;
+
+  & .list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+
+    list-style: none;
+    padding: 0;
+
+    & li { margin: 10px;}
+  }
+}
+
+.btn {
+  display: flex;
+  justify-content: center;
+
+  margin: auto;
+  width: 130px;
+  padding: .8rem 1rem;
+
+  background-color: transparent;
+  font-size: 1.5rem;
+  color: #fff;
+  border: 2px solid #C0C0C0;
+  border-radius: .8rem;
+
+  cursor: pointer;
+
+  &.active {
+    border: 2px solid darken($color-hover, 15);
+    color: darken($color-hover, 15);
+  }
+
+  &:hover,
+  &.active:hover {
+    border: 2px solid $color-hover;
+    color: $color-hover;
+  }
+}
+
+
+/* ===================Board screen================== */
+.timer__info {
+  position: absolute;
+  top: 4vh;
+  margin-bottom: 20px;
+
+  &.warn #time__seconds {
+    display: inline-block;
+    color: $color-warn;
+    transform: scale(0);
+    animation: pulse 1s ease infinite;
+  }
+}
+
+.result__info {
+  @extend .timer__info;
+  font-size: 3rem;
+}
+
+.hide {
+  opacity: 0;
+  transition: opacity .3s linear;
+}
+
+.primary { color: #16D9E3;}
+
+.board {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 60%;
+  height: 70%;
+  max-width: 700px;
+
+  background: linear-gradient(118.38deg, #29323C -4.6%, #485563 200.44%);
+  box-shadow: inset 8px 8px 20px #2A333D, 10px 7px 20px #475462;
+  border-radius: 30px;
+  overflow: hidden;
+
+  &--result {
+    @extend .board;
+    & .final__score {
+      font-size: 3.5rem;
+    }
+  }
+}
+
+.circle {
+  position: absolute;
+  border-radius: 50%;
+  cursor: pointer;
+}
