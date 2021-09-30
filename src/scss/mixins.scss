@@ -1,8 +1,19 @@
 $color-hover: #16D9E3;
 $color-warn: #f35959;
+$color-hint-text: #000;
+$color-hint-bg: #445568;
 
 @keyframes pulse {
     0% { transform: scale(1.0);}
     40% { transform: scale(1.4);}
     to { transform: scale(1.0);}
+}
+
+@keyframes hintDelay {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }

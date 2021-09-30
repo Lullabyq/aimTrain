@@ -88,7 +88,62 @@ h1 {
     list-style: none;
     padding: 0;
 
-    & li { margin: 10px;}
+    & li {
+      margin: 10px;
+      position: relative;
+    }
+  }
+}
+
+.btn__hint {
+  position: absolute;
+  width: 270px;
+  padding: 15px;
+  text-align: justify;
+
+  z-index: -1000;
+
+
+  background: linear-gradient(40deg, $color-hint-bg, #fff);
+  color: $color-hint-text;
+  border: 2px solid $color-hover;
+  border-radius: 20px;
+  box-shadow: 1px 1px 10px #000;
+  line-height: 1.3;
+
+  &__sugg {
+    font-style: italic;
+    font-size: .95rem;
+    line-height: 1.1;
+    color: lighten($color-hint-text, 10);
+    text-align: left;
+
+    & h4 {
+      display: inline-block;
+      margin: 15px 5px 0 0;
+    }
+  }
+
+  &::after,
+  &::before{
+    content: '';
+    display: block;
+    width: 0px;
+    height: 0px;
+
+    position: absolute;
+    top: -30px;
+    left: 100px;
+
+    border: 15px solid transparent;
+    border-bottom-color: $color-hover;
+    background-color: transparent;
+  }
+
+  &::before {
+    z-index: 100;
+    top: -27px;
+    border-bottom-color: #bfc5cb;
   }
 }
 
@@ -115,6 +170,11 @@ h1 {
 
   &:hover,
   &.active:hover {
+    & ~ .btn__hint {
+      z-index: 100;
+      opacity: 0;
+      animation: hintDelay .1s linear .3s forwards;
+    }
     border: 2px solid $color-hover;
     color: $color-hover;
   }

@@ -6,12 +6,15 @@ class AimGame {
       this.currentScreenIndex = 0
       this.board = box.querySelector('#board')
       this.score = 0
+      this.countMiss = 0
       this.circleColors = ['#FFDE40', '#9F3ED5', '#B9F73E']
 
 			// //DEBUG
 			// this.time = 10
 			// this.mode = 2
 			// this.startGame()
+
+      this.placeHint()
 
       box.addEventListener('click', evt => {
 
@@ -34,20 +37,28 @@ class AimGame {
 						evt.target.classList.add('active')
 
 						this.time = +evt.target.dataset.time
+            this.initTime = this.time
 					}
 
 					if (this.box.querySelectorAll('.active').length == 2) {
-						this.changeScreen()
+						this.changeScreen(1)
 						this.startGame()
 					}
 				}
 
-        if (evt.target.classList.contains('circle')) {
-					clearInterval(this.hideId)
-          this.score++
-          evt.target.remove()
-          this.createCircle()
-					this.adjustToMode()
+        if (evt.target.closest('.board')) {
+
+          if (evt.target.classList.contains('circle')) {
+            clearInterval(this.hideId)
+            this.score++
+            evt.target.remove()
+            this.createCircle()
+            this.adjustToMode()
+          }
+
+          if (evt.target.classList.contains('board')) {
+            this.countMiss++
+          }
         }
       })
     }
@@ -62,8 +73,8 @@ class AimGame {
 			})
 		}
 
-    changeScreen() {
-      this.screens[this.currentScreenIndex].classList.add('up')
+    changeScreen(index = this.currentScreenIndex) {
+      this.screens[index].classList.add('up')
       this.currentScreenIndex++
     }
 
@@ -100,6 +111,8 @@ class AimGame {
       let gameScreen = this.screens[this.screens.length - 1]
       let result = this.box.querySelector('.result')
       let resultScore = this.box.querySelector('.board--result')
+
+      // this.saveData()
 
       clearInterval(this.timerId)
 			clearInterval(this.hideId)
@@ -191,6 +204,7 @@ class AimGame {
 
       this.currentScreenIndex = 0
       this.score = 0
+      this.countMiss = 0
       this.box.scrollTop = 0
 
       this.colorTime('normal')
@@ -202,7 +216,20 @@ class AimGame {
       clearInterval(this.timerId)
 			clearInterval(this.hideId)
 		}
-  }
 
+    placeHint() {
+      let hintArray = this.box.querySelectorAll('.btn__hint')
+
+      hintArray.forEach(hint => {
+        let hintElem = hint.previousElementSibling
+        let metrix = hintElem.getBoundingClientRect()
+        let top = hintElem.offsetTop + metrix.height + 15
+        let left = metrix.width / 2 - hint.offsetWidth / 2
+
+        hint.style.left = left + 'px'
+        hint.style.top = top + 'px'
+      })
+    }
+  }
   let game = document.querySelector('#game')
   let aimTrainer = new AimGame(game)
