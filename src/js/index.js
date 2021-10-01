@@ -62,10 +62,23 @@ class AimGame {
   }
 
   startGame() {
-    this.timerId = setInterval(this.decreaseTime.bind(this), 1000);
-    this.setTime()
-    this.adjustToMode()
-    this.initializeCircle()
+    let timer = this.box.querySelector('.timer__info')
+
+    this.board.classList.add('wait')
+    this.board.innerHTML = '<h2 class="primary">Go!</h2>'
+    timer.classList.add('hide')
+
+    setTimeout(() => {
+      this.board.classList.remove('wait')
+      this.board.innerHTML = ''
+      timer.classList.remove('hide')
+
+      this.adjustToMode()
+      this.initializeCircle()
+
+      this.timerId = setInterval(this.decreaseTime.bind(this), 1000);
+      this.setTime()
+    }, 1000)
   }
 
   adjustToMode() {

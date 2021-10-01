@@ -202,7 +202,6 @@ h1 {
 
 .hide {
   opacity: 0;
-  transition: opacity .3s linear;
 }
 
 .primary { color: #16D9E3;}
@@ -232,6 +231,8 @@ h1 {
       font-size: 3.5rem;
     }
   }
+
+  &.wait { font-size: 5rem;}
 }
 
 .circle {

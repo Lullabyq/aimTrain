@@ -2,6 +2,7 @@ $color-hover: #16D9E3;
 $color-warn: #f35959;
 $color-hint-text: #000;
 $color-hint-bg: #445568;
+$color-board-bg: #485563;
 
 @keyframes pulse {
     0% { transform: scale(1.0);}
@@ -10,10 +11,6 @@ $color-hint-bg: #445568;
 }
 
 @keyframes hintDelay {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+    from { opacity: 0;}
+    to { opacity: 1;}
 }
