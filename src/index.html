@@ -1,12 +1,13 @@
 @@include('parts/header.html')
+@@include('parts/icons.html')
 
 <section id="game">
-  <div class="screen up">
+  <div class="screen">
     <h1>Aim Training</h1>
     <a href="#" class="start" id="start">Start game</a>
   </div>
 
-  <div class="screen up">
+  <div class="screen">
     <div class="settings mode-selection">
       <h2 class="selection__title">Choose difficulty</h2>
       <ul class="list list--mode">
@@ -87,6 +88,13 @@
   <div class="result">
     <h1 class="result__info">Game End</h1>
     <div class="board--result"></div>
+
+    <button class="btn btn--back">
+      Play again
+      <svg class="arrow--back">
+        <use href='#reload'></use>
+      </svg>
+    </button>
 
     <div class="leaderboard">
       <h2 class="leaderboard__title">Leaderboard</h2>

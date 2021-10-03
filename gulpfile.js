@@ -40,7 +40,6 @@ function html() {
 
 function css() {
     return src('src/scss/**/*.scss')
-        .pipe(concat('one.scss'))
         .pipe(scss({
             outputStyle: 'compressed'
         }))

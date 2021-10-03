@@ -12,9 +12,9 @@ class AimGame {
 
 
     // DEBUGING
-    this.mode = 1
-    this.initTime = 10
-    this.finishGame()
+    // this.mode = 1
+    // this.initTime = 10
+    // this.finishGame()
 
 
     box.addEventListener('click', evt => {
@@ -44,6 +44,14 @@ class AimGame {
         if (this.box.querySelectorAll('.active').length == 2) {
           this.changeScreen(1)
           this.startGame()
+        }
+
+        if (evt.target.classList.contains('btn--back')) {
+
+          setTimeout(() => {
+            this.resetGame()
+            this.screens[0].classList.add('up')
+          }, 300)
         }
       }
 
@@ -111,6 +119,8 @@ class AimGame {
   finishGame() {
     let gameScreen = this.screens[this.screens.length - 1]
     let resultScore = this.box.querySelector('.board--result')
+
+    console.log('hi');
 
     this.processData()
 
@@ -333,13 +343,13 @@ class Leaderboard {
         && this.mode == this.newPerf.mode
         && this.time == this.newPerf.time) {
         row.classList.add('new__result')
-        this.createAndFillCells(row, 'New', perf.score, perf.pace, perf.accuracy)
+        this.createAndFillCells(row, 'New', perf.score, perf.pace, `${perf.accuracy} %`)
       } else if (perf === undefined) {
         row.classList.remove('new__result')
         this.createAndFillCells(row, `${index + 1})`, '-', '-', '-')
       } else {
         row.classList.remove('new__result')
-        this.createAndFillCells(row, `${index + 1})`, perf.score, perf.pace, perf.accuracy)
+        this.createAndFillCells(row, `${index + 1})`, perf.score, perf.pace, `${perf.accuracy} %`)
       }
     })
   }
@@ -425,7 +435,7 @@ class Perfomance {
     this.time = initTime
     this.mode = mode
     this.pace = score / initTime
-    this.accuracy = (score / (countMiss + score)  * 100).toFixed(2)
+    this.accuracy = (score / (countMiss + score)  * 100).toFixed()
   }
 }
 
