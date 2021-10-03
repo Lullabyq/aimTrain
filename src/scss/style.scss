@@ -195,16 +195,19 @@ h1 {
     letter-spacing: 1px;
     border: 1px solid $color-sidebar-border;
 
-    &.active {
-      border: 1px solid $color-sidebar-hover;
-      color: $color-sidebar-text;
-    }
-
-    &:hover,
+    &.active,
     &.active:hover {
       border: 1px solid $color-sidebar-hover;
       color: $color-sidebar-text;
     }
+
+    &:hover {
+      border: 1px solid lighten($color-sidebar-hover, 40);
+      color: $color-sidebar-text;
+    }
+
+    &:active,
+    &.active:active { border: 1px solid $color-sidebar-hover;}
   }
 }
 
@@ -231,10 +234,9 @@ h1 {
 
   & .leaderboard {
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 25%;
     right: 5%;
-
+    z-index: 100;
     width: 350px;
 
     &__title {
@@ -257,7 +259,9 @@ h1 {
       background-color: $color-sidebar-bg;
       border-top-left-radius: 15px;
       border-bottom-left-radius: 15px;
+
       cursor: pointer;
+      user-select: none;
 
       &.full { animation: openSidebar .5s ease forwards;}
 
@@ -299,8 +303,6 @@ h1 {
 
       background-color: $color-table-bg;
       box-shadow: 0px -50px 10000px $color-table-shadow;
-
-      & tr { line-height: 2.5;}
     }
 
     & table,
@@ -309,6 +311,8 @@ h1 {
       border: 2px solid $color-table-border;
       border-collapse: collapse;
     }
+
+    & tr { height: 54px;}
 
     & tr td:first-child { width: 60px;}
 

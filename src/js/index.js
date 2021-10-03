@@ -12,9 +12,9 @@ class AimGame {
 
 
     // DEBUGING
-    // this.mode = 1
-    // this.initTime = 10
-    // this.finishGame()
+    this.mode = 1
+    this.initTime = 10
+    this.finishGame()
 
 
     box.addEventListener('click', evt => {
@@ -244,6 +244,8 @@ class Leaderboard {
   constructor(trackedAmount, newPerf, screen) {
     this.trackedAmount = trackedAmount
     this.newPerf = newPerf
+    this.mode = this.newPerf.mode
+    this.time = this.newPerf.time
     this.perf = new Perfomance()
     this.screen = screen
     this.sidebar = screen.querySelector('.game__settings')
@@ -268,8 +270,23 @@ class Leaderboard {
       if (this.sidebar.classList.contains('full')) this.closeSidebar()
     })
 
-    this.sidebar.addEventListener('click', () => {
-      this.sidebar.classList.add('full')
+    this.sidebar.addEventListener('click', evt => {
+      let classes = this.sidebar.classList
+      if (!classes.contains('full')) classes.add('full')
+
+      if (!evt.target.closest('button')
+      || evt.target.classList.contains('active')) return
+
+      let btnType = evt.target.closest('.game__settings--option')
+
+      btnType.querySelector('.active').classList.remove('active')
+      evt.target.classList.add('active')
+
+      if (btnType.classList.contains('game--mode')) {
+        this.refreshTable(evt.target, 'mode')
+      } else {
+        this.refreshTable(evt.target, 'time')
+      }
     })
 
     this.sidebar.addEventListener('pointerleave', evt => {
@@ -293,27 +310,35 @@ class Leaderboard {
     this.placeNewResult()
   }
 
+  refreshTable(activeBtn, type) {
+    this[type] = +activeBtn.dataset[type]
+    this.insertResult(this.getLocalData())
+  }
+
   fillLeaderboardTable() {
     this.table = this.screen.querySelector('.leaderboard__table')
     this.rows = this.screen.querySelectorAll('.leaderboard__perfomance')
 
-    this.insertResult()
+    this.insertResult(this.getLocalData())
     this.highlightSettings(this.screen)
   }
 
-  insertResult() {
-    this._results = this.getLocalData()
-
+  insertResult(results) {
     this.rows.forEach(row => {
+      row.innerHTML = ''
       let index = Array.from(this.rows).indexOf(row)
-      let perf = this._results[index]
+      let perf  = results[index]
 
-      if (index == this._positionIndex) {
+      if (index == this._positionIndex
+        && this.mode == this.newPerf.mode
+        && this.time == this.newPerf.time) {
         row.classList.add('new__result')
         this.createAndFillCells(row, 'New', perf.score, perf.pace, perf.accuracy)
       } else if (perf === undefined) {
+        row.classList.remove('new__result')
         this.createAndFillCells(row, `${index + 1})`, '-', '-', '-')
       } else {
+        row.classList.remove('new__result')
         this.createAndFillCells(row, `${index + 1})`, perf.score, perf.pace, perf.accuracy)
       }
     })
@@ -373,7 +398,7 @@ class Leaderboard {
   }
 
   generateKey(p) {
-    return `m${this.newPerf.mode}, t${this.newPerf.time}, n${p}`
+    return `m${this.mode}, t${this.time}, n${p}`
   }
 
   clearStorage() {
