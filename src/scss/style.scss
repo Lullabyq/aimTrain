@@ -157,11 +157,13 @@ h1 {
 
   background-color: transparent;
   font-size: 1.5rem;
-  color: #fff;
-  border: 2px solid #C0C0C0;
+  color: $color-text-main;
+  border: 2px solid $color-btn-border;
   border-radius: .8rem;
 
   cursor: pointer;
+
+  &--small:last-child { margin-bottom: 0;}
 
   &.active {
     border: 2px solid darken($color-hover, 15);
@@ -177,6 +179,32 @@ h1 {
     }
     border: 2px solid $color-hover;
     color: $color-hover;
+  }
+
+  &--small {
+    align-items: center;
+    flex-grow: 1;
+
+    width: 70px;
+    height: 30px;
+    padding: 0;
+    margin-bottom: 10px;
+
+    font-size: .8rem;
+    color: $color-sidebar-text;
+    letter-spacing: 1px;
+    border: 1px solid $color-sidebar-border;
+
+    &.active {
+      border: 1px solid $color-sidebar-hover;
+      color: $color-sidebar-text;
+    }
+
+    &:hover,
+    &.active:hover {
+      border: 1px solid $color-sidebar-hover;
+      color: $color-sidebar-text;
+    }
   }
 }
 
@@ -195,16 +223,107 @@ h1 {
   }
 }
 
-.result__info {
-  @extend .timer__info;
-  font-size: 3rem;
+.result {
+  &__info {
+    @extend .timer__info;
+    font-size: 3rem;
+  }
+
+  & .leaderboard {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 5%;
+
+    width: 350px;
+
+    &__title {
+      margin-bottom: 20px;
+    }
+
+    & .game__settings {
+      position: absolute;
+      left: -28px;
+      top: 83px;
+      z-index: -100;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      opacity: 1;
+      padding: 10px;
+      padding-left: 50px;
+      background-color: $color-sidebar-bg;
+      border-top-left-radius: 15px;
+      border-bottom-left-radius: 15px;
+      cursor: pointer;
+
+      &.full { animation: openSidebar .5s ease forwards;}
+
+      &.preview { animation: preview .2s linear forwards;}
+
+      &.hide__sidebar { animation: hideSidebar .5s ease forwards;}
+
+      & .settings__title {
+        position: absolute;
+        left: -34px;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+
+        height: 20px;
+        color: #111;
+        letter-spacing: 5px;
+        text-transform: uppercase;
+        font-weight: 300;
+
+        transform-origin: center;
+        transform: rotateZ(-90deg);
+      }
+
+      &--option {
+        display: flex;
+        flex-direction: column;
+
+        margin-right: 10px;
+        width: 80%;
+      }
+    }
+
+    & table {
+      width: 100%;
+      margin-top: 20px;
+      overflow: hidden;
+      border-radius: 10px;
+
+      background-color: $color-table-bg;
+      box-shadow: 0px -50px 10000px $color-table-shadow;
+
+      & tr { line-height: 2.5;}
+    }
+
+    & table,
+    & td,
+    & th {
+      border: 2px solid $color-table-border;
+      border-collapse: collapse;
+    }
+
+    & tr td:first-child { width: 60px;}
+
+    & .new__result {
+      font-size: 1.4rem;
+      color: $color-table-hl;
+    }
+  }
 }
 
 .hide {
   opacity: 0;
 }
 
-.primary { color: #16D9E3;}
+.primary { color: $color-text-hl;}
 
 .board {
   display: flex;

@@ -1,8 +1,25 @@
 $color-hover: #16D9E3;
 $color-warn: #f35959;
+
 $color-hint-text: #000;
 $color-hint-bg: #445568;
+
 $color-board-bg: #485563;
+
+$color-btn-border: #C0C0C0;
+
+$color-text-main: #fff;
+$color-text-hl: #16D9E3;
+
+$color-table-bg: rgb(65 77 90 / 100%);
+$color-table-shadow: rgb(89 123 129);
+$color-table-border: rgb(75 94 106);
+$color-table-hl: rgb(122, 239, 255);
+
+$color-sidebar-bg: rgb(255 235 139 / 63%);
+$color-sidebar-text: #111;
+$color-sidebar-border: #fff;
+$color-sidebar-hover: #111;
 
 @keyframes pulse {
     0% { transform: scale(1.0);}
@@ -13,4 +30,20 @@ $color-board-bg: #485563;
 @keyframes hintDelay {
     from { opacity: 0;}
     to { opacity: 1;}
+}
+
+@keyframes openSidebar {
+    from { left: -28px;}
+    to { left: -213px;}
+}
+
+@keyframes hideSidebar {
+    from { left: -213px;}
+    to { left: -28;}
+}
+
+@keyframes preview {
+    from { left: -28px;}
+    50% { left: -50px;}
+    to { left: -28px;}
 }

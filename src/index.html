@@ -87,6 +87,32 @@
   <div class="result">
     <h1 class="result__info">Game End</h1>
     <div class="board--result"></div>
+
+    <div class="leaderboard">
+      <h2 class="leaderboard__title">Leaderboard</h2>
+      <div class="game__settings">
+        <div class="settings__title">Options</div>
+        <div class="game__settings--option game--mode">
+          <button class="btn btn--small" data-mode="1">Rusty</button>
+          <button class="btn btn--small" data-mode="2">Gamer</button>
+          <button class="btn btn--small" data-mode="3">Pro</button>
+        </div>
+        <div class="game__settings--option game--time">
+          <button class="btn btn--small" data-time="10">10s</button>
+          <button class="btn btn--small" data-time="20">20s</button>
+          <button class="btn btn--small" data-time="30">30s</button>
+        </div>
+      </div>
+
+      <table class="leaderboard__table">
+        <tr>
+          <th></th><th>Score</th> <th>Pace</th> <th>Acccuracy</th>
+        </tr>
+        <tr class="leaderboard__perfomance"></tr>
+        <tr class="leaderboard__perfomance"></tr>
+        <tr class="leaderboard__perfomance"></tr>
+      </table>
+    </div>
   </div>
 </section>
 

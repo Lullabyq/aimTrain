@@ -4,10 +4,18 @@ class AimGame {
     this.startBtn = box.querySelector('#start')
     this.screens = box.querySelectorAll('.screen')
     this.board = box.querySelector('#board')
+    this.resultScreen = this.box.querySelector('.result')
     this.currentScreenIndex = 0
     this.score = 0
     this.countMiss = 0
     this.placeHint()
+
+
+    // DEBUGING
+    // this.mode = 1
+    // this.initTime = 10
+    // this.finishGame()
+
 
     box.addEventListener('click', evt => {
 
@@ -102,7 +110,6 @@ class AimGame {
 
   finishGame() {
     let gameScreen = this.screens[this.screens.length - 1]
-    let result = this.box.querySelector('.result')
     let resultScore = this.box.querySelector('.board--result')
 
     this.processData()
@@ -113,18 +120,17 @@ class AimGame {
     this.box.querySelector('.timer__info').classList.add('hide')
     setTimeout(() => {
       gameScreen.style.display = 'none'
-      result.style.display = 'flex'
+      this.resultScreen.style.display = 'flex'
       resultScore.innerHTML = `<h2 class="final__score">Score: <span class='primary'>${this.score}!</span></h2>`
     }, 300);
   }
 
   resetGame() {
     let gameScreen = this.screens[this.screens.length - 1]
-    let result = this.box.querySelector('.result')
     let resultScore = this.box.querySelector('.board--result')
 
     gameScreen.style.display = 'flex'
-    result.style.display = 'none'
+    this.resultScreen.style.display = 'none'
     resultScore.innerHTML = ''
 
     this.box.querySelectorAll('.up').forEach(screen => {
@@ -223,34 +229,122 @@ class AimGame {
   // ===================(GAMEEND)=========================
   processData() {
     let newPerf = new Perfomance(this.score, this.initTime, this.mode, this.countMiss)
-    let repository = new LeaderBoard(3, newPerf)
+    let repository = new Leaderboard(3, newPerf, this.resultScreen)
 
     repository.calculateResult()
+    repository.fillLeaderboardTable()
   }
 }
 
-class LeaderBoard {
 
-  constructor(trackedAmount, newPerf) {
+// =================(AUXILIARY CLASSES)====================
+//---Leaderboard---
+class Leaderboard {
+
+  constructor(trackedAmount, newPerf, screen) {
     this.trackedAmount = trackedAmount
     this.newPerf = newPerf
     this.perf = new Perfomance()
+    this.screen = screen
+    this.sidebar = screen.querySelector('.game__settings')
+
+    this.screen.addEventListener('pointerover', event => {
+      if (!event.target.closest('table')
+        || event.relatedTarget.closest('table')
+        || event.relatedTarget.closest('.game__settings')) return
+
+      this.sidebar.classList.add('preview')
+      setTimeout(() => {
+        this.sidebar.classList.remove('preview')
+      }, 200)
+    })
+
+    this.screen.addEventListener('pointerout', evt => {
+      if (!evt.relatedTarget) return
+      if (!evt.target.closest('table')) return
+      if (evt.relatedTarget.closest('table')
+        || evt.relatedTarget.closest('.game__settings')) return
+
+      if (this.sidebar.classList.contains('full')) this.closeSidebar()
+    })
+
+    this.sidebar.addEventListener('click', () => {
+      this.sidebar.classList.add('full')
+    })
+
+    this.sidebar.addEventListener('pointerleave', evt => {
+      if (evt.relatedTarget.closest('table')
+      || !evt.target.classList.contains('full')) return
+
+      this.closeSidebar()
+    })
+  }
+
+  closeSidebar() {
+    this.sidebar.classList.add('hide__sidebar')
+    this.sidebar.classList.remove('full')
+    setTimeout(() => {
+      this.sidebar.classList.remove('hide__sidebar')
+    }, 500)
   }
 
   calculateResult() {
-    this.getLocalData()
+    this._prevResults = this.getLocalData()
     this.placeNewResult()
   }
 
+  fillLeaderboardTable() {
+    this.table = this.screen.querySelector('.leaderboard__table')
+    this.rows = this.screen.querySelectorAll('.leaderboard__perfomance')
+
+    this.insertResult()
+    this.highlightSettings(this.screen)
+  }
+
+  insertResult() {
+    this._results = this.getLocalData()
+
+    this.rows.forEach(row => {
+      let index = Array.from(this.rows).indexOf(row)
+      let perf = this._results[index]
+
+      if (index == this._positionIndex) {
+        row.classList.add('new__result')
+        this.createAndFillCells(row, 'New', perf.score, perf.pace, perf.accuracy)
+      } else if (perf === undefined) {
+        this.createAndFillCells(row, `${index + 1})`, '-', '-', '-')
+      } else {
+        this.createAndFillCells(row, `${index + 1})`, perf.score, perf.pace, perf.accuracy)
+      }
+    })
+  }
+
+  createAndFillCells(row, ...data) {
+    for (let i = 0; i < data.length; i++) {
+      let cell = document.createElement('td')
+      cell.innerHTML = data[i]
+      row.append(cell)
+    }
+  }
+
+  highlightSettings(screen) {
+    screen
+      .querySelector(`[data-mode="${this.newPerf.mode}"]`)
+      .classList.add('active')
+    screen
+      .querySelector(`[data-time="${this.newPerf.time}"]`)
+      .classList.add('active')
+  }
+
   getLocalData() {
-    this._prevResults = []
+    let data = []
 
     for (let i = 0; i < this.trackedAmount; i++) {
       let achiv = JSON.parse(localStorage.getItem(this.generateKey(i + 1)))
-      // let achiv = this.perf.getLocalData(this.generateKey(i + 1))
-
-      if (achiv) this._prevResults.push(achiv)
+      if (achiv) data.push(achiv)
     }
+
+    return data
   }
 
   placeNewResult() {
@@ -288,6 +382,7 @@ class LeaderBoard {
   }
 }
 
+// ---Perfomance---
 class Perfomance {
   constructor(...prop) {
     if (prop.length != 0) this.createDataProp(...prop)
@@ -305,10 +400,11 @@ class Perfomance {
     this.time = initTime
     this.mode = mode
     this.pace = score / initTime
-    this.accuracy = (score / (countMiss + score)).toFixed(4) * 100
+    this.accuracy = (score / (countMiss + score)  * 100).toFixed(2)
   }
 }
 
+// --- CIRCLE ---
 class Circle {
   constructor(minD, maxD, place) {
     this.circleColors = ['#FFDE40', '#9F3ED5', '#B9F73E']
