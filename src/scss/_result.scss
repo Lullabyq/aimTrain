@@ -1,0 +1,63 @@
+@use 'variables' as *;
+@use 'mixins';
+
+.result {
+  display: none;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  background: linear-gradient(90deg, #29323C 0%, #485563 100%);
+
+  &__info {
+    position: absolute;
+    top: 4vh;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    margin-bottom: 20px;
+
+    font-size: 3rem;
+    width: 220px;
+  }
+
+  & .leaderboard { top: 15%}
+}
+
+@media (max-width: 1600px) {
+  .result {
+    & .column {
+      &__left {
+        position: static;
+        width: 0;
+        flex-grow: 0;
+      }
+
+      &__center {
+        width: 100%;
+        max-width: none;
+      }
+
+      &__right {
+        position: static;
+        width: 0;
+        flex-grow: 0;
+      }
+    }
+
+    & .leaderboard {
+      top: 52%;
+
+      &__title { display: none;}
+    }
+  }
+
+  .final__score {
+    position: relative;
+    top: -20%;
+  }
+}
+

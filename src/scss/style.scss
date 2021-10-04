@@ -1,6 +1,9 @@
-@use "btn";
 @use "variables" as *;
 @use "mixins";
+@use "btn";
+@use "result";
+@use "leaderboard";
+
 
 @import url('https://fonts.googleapis.com/css?family=Khula&display=swap');
 
@@ -20,7 +23,8 @@ body {
 }
 
 
-/* =========First screen============== */
+/* First screen
+************************* */
 a {
   color: #fff;
   text-decoration: none;
@@ -41,12 +45,11 @@ h1 {
   font-size: 3rem;
 }
 
+
+/* General classes
+************************* */
 %screen {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
   position: relative;
   height: 100vh;
   width: 100vw;
@@ -65,22 +68,52 @@ h1 {
     transform: translateY(100vh);
     transition: transform 0.5s ease-out;
   }
+
+  &__basic {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
-.result {
-  @extend %screen;
-  display: none;
+.column {
+  position: relative;
+  flex: 1 1 auto;
+  height: 100%;
+
+  &__left {
+    width: 20%;
+  }
+
+  &__center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    width: 60%;
+    max-width: 700px;
+  }
+
+  &__right {
+    width: 20%;
+  }
 }
 
 
-/* ===========Settings screen=========== */
+/* Settings screen
+************************* */
+.screen__settings .leaderboard { display: none;}
+
 .settings {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   justify-content: center;
   flex-basis: 400px;
-  width: 55%;
+  width: 100%;
   max-width: 650px;
 
   & .list {
@@ -100,7 +133,8 @@ h1 {
 }
 
 
-/* ===========Board screen============= */
+/* Board screen
+************************** */
 .timer__info {
   position: absolute;
   top: 4vh;
@@ -114,133 +148,19 @@ h1 {
   }
 }
 
-.result {
-  &__info {
-    @extend .timer__info;
-    font-size: 3rem;
-  }
-
-  & .leaderboard {
-    position: absolute;
-    top: 25%;
-    right: 5%;
-    z-index: 100;
-    width: 350px;
-
-    &__title {
-      margin-bottom: 20px;
-    }
-
-    & .game__settings {
-      position: absolute;
-      left: -28px;
-      top: 83px;
-      z-index: -100;
-
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      opacity: 1;
-      padding: 10px;
-      padding-left: 50px;
-      background-color: $color-sidebar-bg;
-      border-top-left-radius: 15px;
-      border-bottom-left-radius: 15px;
-
-      cursor: pointer;
-      user-select: none;
-
-      &.full { animation: openSidebar .5s ease forwards;}
-
-      &.preview { animation: preview .2s linear forwards;}
-
-      &.hide__sidebar { animation: hideSidebar .5s ease forwards;}
-
-      & .settings__title {
-        position: absolute;
-        left: -34px;
-        top: 0;
-        bottom: 0;
-        margin: auto;
-
-        height: 20px;
-        color: #111;
-        letter-spacing: 5px;
-        text-transform: uppercase;
-        font-weight: 300;
-
-        transform-origin: center;
-        transform: rotateZ(-90deg);
-      }
-
-      &--option {
-        display: flex;
-        flex-direction: column;
-
-        margin-right: 10px;
-        width: 80%;
-      }
-    }
-
-    & table {
-      width: 100%;
-      margin-top: 20px;
-      overflow: hidden;
-      border-radius: 10px;
-
-      background-color: $color-table-bg;
-      box-shadow: 0px -50px 10000px $color-table-shadow;
-    }
-
-    & table,
-    & td,
-    & th {
-      border: 2px solid $color-table-border;
-      border-collapse: collapse;
-    }
-
-    & tr { height: 54px;}
-
-    & tr td:first-child { width: 60px;}
-
-    & .new__result {
-      font-size: 1.4rem;
-      color: $color-table-hl;
-    }
-  }
-}
-
-.hide {
-  opacity: 0;
-}
+.hide { opacity: 0;}
 
 .primary { color: $color-text-hl;}
 
 .board {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
+  @include mixins.styleBoard();
   width: 60%;
-  height: 70%;
-  max-width: 700px;
-
-  background: linear-gradient(118.38deg, #29323C -4.6%, #485563 200.44%);
-  box-shadow: inset 8px 8px 20px #2A333D, 10px 7px 20px #475462;
-  border-radius: 30px;
-  overflow: hidden;
 
   &--result {
-    @extend .board;
-    & .final__score {
-      font-size: 3.5rem;
-    }
+    @include mixins.styleBoard();
+    width: 100%;
+
+    & .final__score { font-size: 3.5rem;}
   }
 
   &.wait { font-size: 5rem;}

@@ -1,0 +1,69 @@
+@mixin styleBoard() {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+
+    height: 70%;
+    max-width: 700px;
+
+    background: linear-gradient(118.38deg, #29323C -4.6%, #485563 200.44%);
+    box-shadow: inset 8px 8px 20px #2A333D, 10px 7px 20px #475462;
+    border-radius: 30px;
+    overflow: hidden;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1.0);}
+    40% { transform: scale(1.4);}
+    to { transform: scale(1.0);}
+}
+
+@keyframes hintDelay {
+    from { opacity: 0;}
+    to { opacity: 1;}
+}
+
+@keyframes openSidebar {
+    from { left: -28px;}
+    to { left: -213px;}
+}
+
+@keyframes hideSidebar {
+    from { left: -213px;}
+    to { left: -28;}
+}
+
+@keyframes preview {
+    from { left: -28px;}
+    50% { left: -50px;}
+    to { left: -28px;}
+}
+
+@keyframes click {
+    from {
+      top: 0px;
+      bottom: 0px;
+      left: 0px;
+      right: 0px;
+      opacity: 1;
+    }
+    to {
+      top: -20px;
+      bottom: -20px;
+      left: -20px;
+      right: -20px;
+      opacity: 0;
+    }
+}
+
+@keyframes rotate {
+    from { transform: scale(1.4)}
+    to { transform:  scale(1.4) rotateZ(540deg);}
+}

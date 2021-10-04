@@ -10,12 +10,10 @@ class AimGame {
     this.countMiss = 0
     this.placeHint()
 
-
     // DEBUGING
     // this.mode = 1
     // this.initTime = 10
     // this.finishGame()
-
 
     box.addEventListener('click', evt => {
 
@@ -120,8 +118,6 @@ class AimGame {
     let gameScreen = this.screens[this.screens.length - 1]
     let resultScore = this.box.querySelector('.board--result')
 
-    console.log('hi');
-
     this.processData()
 
     clearInterval(this.timerId)
@@ -162,7 +158,8 @@ class AimGame {
     clearInterval(this.hideId)
   }
 
-  // ==================(OPTION SCREEN)=======================
+  //             OPTION SCREEN
+  // =======================
   clearActiveBtn(classSelector) {
     let timesBtn = this.box.querySelectorAll(classSelector)
 
@@ -187,7 +184,8 @@ class AimGame {
     })
   }
 
-  // ====================(GAME SCREEN)=============================
+  //             GAME SCREEN
+  //=============================
   // ---Timer---
   decreaseTime() {
     this.time --
@@ -236,7 +234,8 @@ class AimGame {
     this.initializeCircle()
   }
 
-  // ===================(GAMEEND)=========================
+  //                GAMEEND
+  //===============================
   processData() {
     let newPerf = new Perfomance(this.score, this.initTime, this.mode, this.countMiss)
     let repository = new Leaderboard(3, newPerf, this.resultScreen)
@@ -247,7 +246,8 @@ class AimGame {
 }
 
 
-// =================(AUXILIARY CLASSES)====================
+//             AUXILIARY CLASSES
+//==================================
 //---Leaderboard---
 class Leaderboard {
 

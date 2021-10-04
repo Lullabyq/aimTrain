@@ -1,0 +1,93 @@
+@use "variables" as *;
+@use "mixins";
+
+.leaderboard {
+    position: absolute;
+    top: 4vh;
+    z-index: 100;
+
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 350px;
+
+    &__title { margin-bottom: 20px;}
+
+    & .game__settings {
+      position: absolute;
+      left: -28px;
+      top: 83px;
+      z-index: -100;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      opacity: 1;
+      padding: 10px;
+      padding-left: 50px;
+      background-color: $color-sidebar-bg;
+      border-top-left-radius: 15px;
+      border-bottom-left-radius: 15px;
+
+      cursor: pointer;
+      user-select: none;
+
+      &.full { animation: openSidebar .5s ease forwards;}
+
+      &.preview { animation: preview .2s linear forwards;}
+
+      &.hide__sidebar { animation: hideSidebar .5s ease forwards;}
+
+      & .settings__title {
+        position: absolute;
+        left: -34px;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+
+        height: 20px;
+        color: #111;
+        letter-spacing: 5px;
+        text-transform: uppercase;
+        font-weight: 300;
+
+        transform-origin: center;
+        transform: rotateZ(-90deg);
+      }
+
+      &--option {
+        display: flex;
+        flex-direction: column;
+
+        margin-right: 10px;
+        width: 80%;
+      }
+    }
+
+    & table {
+      width: 100%;
+      margin-top: 20px;
+      overflow: hidden;
+      border-radius: 10px;
+
+      background-color: $color-table-bg;
+      box-shadow: 0px -50px 10000px $color-table-shadow;
+    }
+
+    & table,
+    & td,
+    & th {
+      border: 2px solid $color-table-border;
+      border-collapse: collapse;
+    }
+
+    & tr { height: 54px;}
+
+    & tr td:first-child { width: 60px;}
+
+    & .new__result {
+      font-size: 1.4rem;
+      color: $color-table-hl;
+    }
+  }
