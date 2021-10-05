@@ -11,8 +11,10 @@ class AimGame {
     this.placeHint()
 
     // DEBUGING
-    // this.mode = 1
-    // this.initTime = 10
+    this.mode = 3
+    this.initTime = 50
+    this.time = 50
+    this.startGame()
     // this.finishGame()
 
     box.addEventListener('click', evt => {
@@ -45,7 +47,6 @@ class AimGame {
         }
 
         if (evt.target.classList.contains('btn--back')) {
-
           setTimeout(() => {
             this.resetGame()
             this.screens[0].classList.add('up')
@@ -54,13 +55,20 @@ class AimGame {
       }
 
       if (evt.target.closest('.board')) {
+        if (evt.target.classList.contains('clicked')) return
 
         if (evt.target.classList.contains('circle')) {
+          evt.target.classList.add('clicked')
+          evt.target.style.backgroundColor = ''
+
           clearInterval(this.hideId)
           this.score++
-          evt.target.remove()
+
           this.initializeCircle()
           this.adjustToMode()
+          setTimeout(() => {
+            evt.target.remove()
+          }, 200)
         }
 
         if (evt.target.classList.contains('board')) {
@@ -92,7 +100,7 @@ class AimGame {
 
       this.timerId = setInterval(this.decreaseTime.bind(this), 1000);
       this.setTime()
-    }, 1000)
+    }, 900)
   }
 
   adjustToMode() {
@@ -117,8 +125,7 @@ class AimGame {
   finishGame() {
     let gameScreen = this.screens[this.screens.length - 1]
     let resultScore = this.box.querySelector('.board--result')
-
-    this.processData()
+    let circle = gameScreen.querySelector('.circle').remove()
 
     clearInterval(this.timerId)
     clearInterval(this.hideId)
@@ -128,7 +135,9 @@ class AimGame {
       gameScreen.style.display = 'none'
       this.resultScreen.style.display = 'flex'
       resultScore.innerHTML = `<h2 class="final__score">Score: <span class='primary'>${this.score}!</span></h2>`
-    }, 300);
+
+      this.processData()
+    }, 200);
   }
 
   resetGame() {
@@ -225,7 +234,7 @@ class AimGame {
   }
 
   setAutoHiding(mode) {
-    let delay = mode == 2 ? 1500 : 1000
+    let delay = mode == 2 ? 1200 : 1000
     this.hideId = setInterval(this.hideCircle.bind(this), delay)
   }
 
@@ -431,11 +440,13 @@ class Perfomance {
   }
 
   createDataProp(score, initTime, mode, countMiss) {
+    let clicks = countMiss + score
+
     this.score = score
     this.time = initTime
     this.mode = mode
     this.pace = score / initTime
-    this.accuracy = (score / (countMiss + score)  * 100).toFixed()
+    this.accuracy = clicks === 0 ? 0 : (score / clicks  * 100).toFixed()
   }
 }
 

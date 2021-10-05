@@ -67,3 +67,21 @@
     from { transform: scale(1.4)}
     to { transform:  scale(1.4) rotateZ(540deg);}
 }
+
+@keyframes circleRemove {
+    from {
+      left: 6px;
+      right: 6px;
+      top: 6px;
+      bottom: 6px;
+      opacity: .8;
+    }
+
+    to {
+      top: -7px;
+      bottom: -7px;
+      left: -7px;
+      right: -7px;
+      opacity: 0;
+    }
+  }
