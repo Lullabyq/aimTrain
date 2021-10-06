@@ -26,6 +26,9 @@ class AimGame {
     }, 0)
 
 
+    window.addEventListener('resize', this.adjustHintToResize.bind(this))
+    window.addEventListener('load', this.adjustHintToResize.bind(this))
+
     box.addEventListener('click', evt => {
       if (evt.target.tagName == 'A') {
         evt.preventDefault()
@@ -104,6 +107,22 @@ class AimGame {
         }
       }
     })
+  }
+
+  adjustHintToResize() {
+    let hints = this.box.querySelectorAll('.btn__hint')
+
+    if (document.documentElement.clientWidth < 775) {
+      hints.forEach(hint => {
+        hint.classList.add('btn__hint--small')
+        hint.style = ''
+      })
+    } else if (hints[0].classList.contains('btn__hint--small')) {
+      hints.forEach(hint => {
+        hint.classList.remove('btn__hint--small')
+        this.placeHint()
+      })
+    }
   }
 
   switchModalWindow(target) {

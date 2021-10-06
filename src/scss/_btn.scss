@@ -52,6 +52,16 @@
     border-bottom-color: #bfc5cb;
   }
 }
+
+.btn__hint--small {
+  top: 38vh;
+  left: 50vw;
+  transform: translateX(-50%);
+
+  &::before,
+  &::after { display: none;}
+}
+
 %btn-basic {
   position: relative;
   display: flex;

@@ -237,3 +237,14 @@ h1 {
     }
   }
 }
+
+
+@media (max-width: 775px) {
+  html { font-size: 12px;}
+
+  .settings .list {
+    justify-content: space-evenly;
+
+    & li { position: static;}
+  }
+}
