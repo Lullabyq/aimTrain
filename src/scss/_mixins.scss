@@ -11,6 +11,7 @@
     bottom: 0;
 
     height: 70%;
+    width: 100%;
     max-width: 700px;
 
     background: linear-gradient(118.38deg, #29323C -4.6%, #485563 200.44%);
@@ -55,10 +56,10 @@
       opacity: 1;
     }
     to {
-      top: -20px;
-      bottom: -20px;
-      left: -20px;
-      right: -20px;
+      top: -15px;
+      bottom: -15px;
+      left: -15px;
+      right: -15px;
       opacity: 0;
     }
 }

@@ -3,7 +3,7 @@
 
 .leaderboard {
     position: absolute;
-    top: 4vh;
+    top: 7vh;
     z-index: 100;
 
     left: 0;
@@ -84,7 +84,12 @@
 
     & tr { height: 54px;}
 
-    & tr td:first-child { width: 60px;}
+    & tr:not(:first-child) {font-size: 1.3rem;}
+
+    & tr td:first-child {
+        width: 60px;
+        font-size: 1.1rem;
+    }
 
     & .new__result {
       font-size: 1.4rem;

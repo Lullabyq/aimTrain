@@ -13,6 +13,8 @@
 
 h1, h2, h3, h4, h5, h6 { margin: 0;}
 
+html { overflow: auto;}
+
 body {
   color: #fff;
   font-family: 'Khula', sans-serif;
@@ -105,8 +107,6 @@ h1 {
 
 /* Settings screen
 ************************* */
-.screen__settings .leaderboard { display: none;}
-
 .settings {
   display: flex;
   flex-direction: column;
@@ -154,11 +154,9 @@ h1 {
 
 .board {
   @include mixins.styleBoard();
-  width: 60%;
 
   &--result {
     @include mixins.styleBoard();
-    width: 100%;
 
     & .final__score { font-size: 3.5rem;}
   }
@@ -181,6 +179,61 @@ h1 {
       background-color: #333d49;
 
       animation: circleRemove .2s linear forwards;
+    }
+  }
+}
+
+@media (max-width: 1450px) {
+  .column {
+    &__left {
+      position: static;
+      width: 0;
+      flex-grow: 0;
+    }
+
+    &__center {
+      width: 100%;
+      max-width: none;
+    }
+
+    &__right {
+      position: static;
+      width: 0;
+      flex-grow: 0;
+    }
+  }
+
+  .screen__settings {
+    .btn--records {
+      position: absolute;
+      right: 5vw;
+      z-index: 999;
+    }
+
+    .leaderboard {
+      top: 50%;
+      transform: scale(1.2) translateY(-50%);
+      z-index: 999;
+    }
+
+    .mask {
+      position: fixed;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      z-index: 998;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: linear-gradient(90deg, #29323C 0%, #485563 100%);
+      opacity: .97;
+
+      &--disabled {
+        display: none;
+      }
     }
   }
 }

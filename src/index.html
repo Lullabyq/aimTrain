@@ -71,11 +71,6 @@
             </button>
           </li>
           <li>
-            <button class="btn btn--time" data-time="20">
-              20 sec
-            </button>
-          </li>
-          <li>
             <button class="btn btn--time" data-time="30">
               30 sec
             </button>
@@ -90,8 +85,11 @@
     </div>
 
     <div class="column column__right">
-      <div class="leaderboard">
-        <h2 class="leaderboard__title">Leaderboard</h2>
+      <div class="mask mask--disabled" data-node-selector="#leaderboard"></div>
+      <button class="btn--records" data-node-selector="#leaderboard">
+        Records
+      </button>
+      <div class="leaderboard" id="leaderboard" hidden>
         <div class="game__settings">
           <div class="settings__title">Options</div>
           <div class="game__settings--option game--mode">
@@ -101,8 +99,8 @@
           </div>
           <div class="game__settings--option game--time">
             <button class="btn btn--small" data-time="10">10s</button>
-            <button class="btn btn--small" data-time="20">20s</button>
             <button class="btn btn--small" data-time="30">30s</button>
+            <button class="btn btn--small" data-time="50">50s</button>
           </div>
         </div>
 
@@ -122,8 +120,14 @@
   <!--         BOARD
   --------------------------- -->
   <div class="screen screen__basic">
-    <h2 class="timer__info">Time left <br> <span id="time">00 : </span><span id="time__seconds">00</span></h2>
-    <div class="board board--main" id="board"></div>
+    <div class="column column__left"></div>
+    <div class="column column__center">
+
+      <h2 class="timer__info">Time left <br> <span id="time">00 : </span><span id="time__seconds">00</span></h2>
+      <div class="board board--main" id="board"></div>
+
+    </div>
+    <div class="column column__right"></div>
   </div>
 
 
@@ -156,8 +160,8 @@
           </div>
           <div class="game__settings--option game--time">
             <button class="btn btn--small" data-time="10">10s</button>
-            <button class="btn btn--small" data-time="20">20s</button>
             <button class="btn btn--small" data-time="30">30s</button>
+            <button class="btn btn--small" data-time="50">50s</button>
           </div>
         </div>
 
