@@ -1,3 +1,7 @@
+import Leaderboard from "./modules/leaderboard.js"
+import Perfomance from "./modules/perfomance.js"
+import Circle from "./modules/circle.js"
+
 class AimGame {
   constructor(box) {
     this.box = box
@@ -9,22 +13,6 @@ class AimGame {
     this.score = 0
     this.countMiss = 0
     this.placeHint()
-
-    // DEBUGING
-    this.mode = 3
-    this.initTime = 10
-    // this.time = 10
-    // this.startGame()
-    this.finishGame()
-
-    setTimeout(() => {
-      let click = new Event('click', {
-        bubbles: true,
-      })
-      let target = this.box.querySelector('.btn--back')
-      target.dispatchEvent(click)
-    }, 0)
-
 
     window.addEventListener('resize', this.adjustHintToResize.bind(this))
     window.addEventListener('load', this.adjustHintToResize.bind(this))
@@ -68,13 +56,14 @@ class AimGame {
             this.resetGame()
             this.changeScreen()
 
-            let btnList = this.screens[this.currentScreenIndex]
+            let btn = this.screens[1]
             .querySelector('.btn--records')
-            .classList
 
-            btnList.add('attention')
+            btn.style.display = 'flex'
+
+            btn.classList.add('attention')
             setTimeout(() => {
-              btnList.remove('attention')
+              btn.classList.remove('attention')
             }, 800)
           }, 300)
         }
@@ -160,6 +149,8 @@ class AimGame {
       this.timerId = setInterval(this.decreaseTime.bind(this), 1000);
       this.setTime()
     }, 900)
+
+    this.clearActiveBtn('.screen__settings .active')
   }
 
   adjustToMode() {
@@ -217,7 +208,7 @@ class AimGame {
     this.countMiss = 0
 
     this.colorTime('normal')
-    this.clearActiveBtn('.column__center .btn')
+    this.clearActiveBtn('.result .btn')
 
     let circle = this.board.querySelector('.circle')
     if (circle) circle.remove()
@@ -313,240 +304,5 @@ class AimGame {
   }
 }
 
-
-//             AUXILIARY CLASSES
-//==================================
-//---Leaderboard---
-class Leaderboard {
-
-  constructor(trackedAmount, newPerf) {
-    this.trackedAmount = trackedAmount
-    this.newPerf = newPerf
-    this.mode = this.newPerf.mode
-    this.time = this.newPerf.time
-  }
-
-  storeResult() {
-    this._prevResults = this.getLocalData()
-    this.placeNewResult()
-  }
-
-  fillLeaderboardTable(screen) {
-    this.screen = screen
-    this.sidebar = screen.querySelector('.game__settings')
-    this.table = screen.querySelector('.leaderboard__table')
-    this.rows = screen.querySelectorAll('.leaderboard__perfomance')
-
-    this.insertResult(this.getLocalData())
-    this.highlightSettings()
-    this.setTableListeners()
-  }
-
-  insertResult(results) {
-    this.rows.forEach(row => {
-      row.innerHTML = ''
-      let index = Array.from(this.rows).indexOf(row)
-      let perf  = results[index]
-
-      if (index == this._positionIndex
-        && this.mode == this.newPerf.mode
-        && this.time == this.newPerf.time) {
-        row.classList.add('new__result')
-        this.createAndFillCells(row, 'New', perf.score, perf.pace, `${perf.accuracy} %`)
-      } else if (perf === undefined) {
-        row.classList.remove('new__result')
-        this.createAndFillCells(row, `${index + 1})`, '-', '-', '-')
-      } else {
-        row.classList.remove('new__result')
-        this.createAndFillCells(row, `${index + 1})`, perf.score, perf.pace, `${perf.accuracy} %`)
-      }
-    })
-  }
-
-  createAndFillCells(row, ...data) {
-    for (let i = 0; i < data.length; i++) {
-      let cell = document.createElement('td')
-      cell.innerHTML = data[i]
-      row.append(cell)
-    }
-  }
-
-  highlightSettings() {
-    this.screen
-      .querySelector(`.column__right [data-mode="${this.mode}"]`)
-      .classList.add('active')
-    this.screen
-      .querySelector(`.column__right [data-time="${this.time}"]`)
-      .classList.add('active')
-  }
-
-  setTableListeners() {
-    this.screen.addEventListener('pointerover', event => {
-      if (!event.target.closest('table')
-        || event.relatedTarget.closest('table')
-        || event.relatedTarget.closest('.game__settings')) return
-
-      this.sidebar.classList.add('preview')
-      setTimeout(() => {
-        this.sidebar.classList.remove('preview')
-      }, 200)
-    })
-
-    this.screen.addEventListener('pointerout', evt => {
-      if (!evt.relatedTarget) return
-      if (!evt.target.closest('table')) return
-      if (evt.relatedTarget.closest('table')
-        || evt.relatedTarget.closest('.game__settings')) return
-
-      if (this.sidebar.classList.contains('full')) this.closeSidebar()
-    })
-
-    this.sidebar.addEventListener('click', evt => {
-      let classes = this.sidebar.classList
-      if (!classes.contains('full')) classes.add('full')
-
-      if (!evt.target.closest('button')
-      || evt.target.classList.contains('active')) return
-
-      let btnType = evt.target.closest('.game__settings--option')
-
-      btnType.querySelector('.active').classList.remove('active')
-      evt.target.classList.add('active')
-
-      if (btnType.classList.contains('game--mode')) {
-        this.refreshTable(evt.target, 'mode')
-      } else {
-        this.refreshTable(evt.target, 'time')
-      }
-    })
-
-    this.sidebar.addEventListener('pointerleave', evt => {
-      if (evt.relatedTarget.closest('table')
-      || !evt.target.classList.contains('full')) return
-
-      this.closeSidebar()
-    })
-  }
-
-  closeSidebar() {
-    this.sidebar.classList.add('hide__sidebar')
-    this.sidebar.classList.remove('full')
-    setTimeout(() => {
-      this.sidebar.classList.remove('hide__sidebar')
-    }, 500)
-  }
-
-  refreshTable(activeBtn, type) {
-    this[type] = +activeBtn.dataset[type]
-    this.insertResult(this.getLocalData())
-  }
-
-  getLocalData() {
-    let data = []
-
-    for (let i = 0; i < this.trackedAmount; i++) {
-      let achiv = JSON.parse(localStorage.getItem(this.generateKey(i + 1)))
-      if (achiv) data.push(achiv)
-    }
-
-    return data
-  }
-
-  placeNewResult() {
-    for (let i = 0; i < this.trackedAmount; i++) {
-      if (this.checkOldPerfomance(this._prevResults[i])) {
-        this._positionIndex = i
-        this.changeStorage()
-        break
-      }
-    }
-  }
-
-  checkOldPerfomance(old) {
-    if (!old) return true
-    return this.newPerf.score === old.score ?
-    this.newPerf.accuracy > old.accuracy : this.newPerf.score > old.score
-  }
-
-  changeStorage() {
-    localStorage.setItem(this.generateKey(this._positionIndex + 1), JSON.stringify(this.newPerf))
-    for (let i = this._positionIndex; i < this.trackedAmount - 1; i++) {
-      if (this._prevResults[i]) {
-        localStorage.setItem(this.generateKey(i + 2), JSON.stringify(this._prevResults[i]))
-      }
-    }
-  }
-
-  generateKey(p) {
-    return `m${this.mode}, t${this.time}, n${p}`
-  }
-
-  clearStorage() {
-    localStorage.clear()
-    return 'done -_- as you wished'
-  }
-}
-
-// ---Perfomance---
-class Perfomance {
-  constructor(...prop) {
-    if (prop.length != 0) this.createDataProp(...prop)
-  }
-
-  getLocalData(key) {
-    let perfData = JSON.parse(localStorage.getItem(key))
-    if (perfData) {
-      this.createDataProp(perfData.score, perfData.initTime, perfData.mode, perfData.countMiss)
-    }
-  }
-
-  createDataProp(score, initTime, mode, countMiss) {
-    let clicks = countMiss + score
-    let pace = (score / initTime).toFixed(2).toString()
-
-    if (pace.slice(-2) == '00') {
-      this.pace = +pace.slice(0, -2)
-    } else if (pace[-1] == '0') {
-      this.pace = +pace.slice(0, -1)
-    } else {
-      this.pace = +pace
-    }
-
-    this.score = score
-    this.time = initTime
-    this.mode = mode
-    this.accuracy = clicks === 0 ? 0 : (score / clicks  * 100).toFixed()
-  }
-}
-
-// --- CIRCLE ---
-class Circle {
-  constructor(minD, maxD, place) {
-    this.circleColors = ['#FFDE40', '#9F3ED5', '#B9F73E']
-    this.minDiameter = minD
-    this.maxDiameter = maxD
-    this.board = place
-
-    this.generateCircleProp()
-  }
-
-  generateCircleProp() {
-    let colorIndex = this.getRandomNumber(0, this.circleColors.length, true)
-    this.diameter = this.getRandomNumber(this.minDiameter, this.maxDiameter)
-
-    let top = this.getRandomNumber(0, this.board.offsetHeight - this.diameter)
-    let left = this.getRandomNumber(0, this.board.offsetWidth - this.diameter)
-
-    this.color = this.circleColors[colorIndex]
-    this.position = [left, top]
-  }
-
-  getRandomNumber(min, max, isRound = false) {
-    let number = min + Math.random() * (max - min)
-    return isRound ? Math.floor(number) : number
-  }
-}
-
-
 let game = document.querySelector('#game')
-let aimTrainer = new AimGame(game)
+new AimGame(game)

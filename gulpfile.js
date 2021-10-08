@@ -1,20 +1,22 @@
 import gulp         from 'gulp'
 import dartSass     from 'sass'
 import gulpSass     from 'gulp-sass'
+import sourcemaps   from 'gulp-sourcemaps';
 import concat       from 'gulp-concat'
 import browserSync  from 'browser-sync'
-import uglifyEs     from 'gulp-uglify-es'
 import include      from 'gulp-file-include'
 import autoprefixer from 'gulp-autoprefixer'
 import htmlmin      from 'gulp-htmlmin'
 import del          from 'del'
+import rollup       from '@rollup/stream'
+import { terser }   from 'rollup-plugin-terser'
+import source       from 'vinyl-source-stream'
 
 import imagemin , {gifsicle, mozjpeg, optipng, svgo} from 'gulp-imagemin'
 
 const {src, dest, watch, series, parallel} = gulp
 const scss   = gulpSass( dartSass )
 const sync   = browserSync.create()
-const uglify = uglifyEs.default
 
 
 function browsersync() {
@@ -40,20 +42,28 @@ function html() {
 
 function css() {
     return src('src/scss/**/*.scss')
-        .pipe(scss({
-            outputStyle: 'compressed'
-        }))
-        .pipe(concat('style.min.css'))
-        .pipe(autoprefixer({
-            cascade: false
-        }))
+        .pipe(sourcemaps.init())
+            .pipe(scss({
+                outputStyle: 'compressed'
+            }))
+            .pipe(concat('style.min.css'))
+            .pipe(autoprefixer({
+                cascade: false
+            }))
+        .pipe(sourcemaps.write())
         .pipe(dest('dist/css'))
 }
 
 function scripts() {
-    return src('src/js/index.js')
-    .pipe(concat('index.min.js'))
-    .pipe(uglify()) // compress js
+    return rollup({
+        input: 'src/js/index.js',
+        plugins: [terser()],
+        output: {
+            format: 'iife',
+            sourcemap: true,
+        }
+    })
+    .pipe(source('index.min.js'))
     .pipe(dest('dist/js'))
 }
 

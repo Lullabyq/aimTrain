@@ -86,13 +86,58 @@
 
     & tr:not(:first-child) {font-size: 1.3rem;}
 
-    & tr td:first-child {
+    & tr td {
+      &:first-child {
         width: 60px;
         font-size: 1.1rem;
+      }
+
+      &:nth-child(3) {
+        width: 80px;
+      }
     }
 
     & .new__result {
       font-size: 1.4rem;
       color: $color-table-hl;
+    }
+  }
+
+  @media (max-width: 970px) {
+    .result .game__settings { display: none !important;}
+
+    .leaderboard .game__settings {
+      &--static {
+        flex-direction: column;
+
+        top: -70px;
+        left: 50%;
+        transform: translateX(-50%);
+
+        border-bottom-left-radius: 0;
+        border-top-right-radius: 15px;
+
+        cursor: default;
+        padding: 10px;
+
+        & .settings__title { display: none;}
+      }
+
+      &--option {
+        flex-direction: row;
+        margin-bottom: 10px;
+        margin-right: 0;
+
+        width: 100%;
+
+        &:last-child { margin-bottom: 0;}
+      }
+
+      & .btn--small {
+        margin-bottom: 0;
+        margin-right: 5px;
+
+        &:last-child { margin-right: 0;}
+      }
     }
   }

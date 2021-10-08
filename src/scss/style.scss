@@ -1,9 +1,12 @@
 @use "variables" as *;
 @use "mixins";
 @use "btn";
-@use "result";
-@use "leaderboard";
 
+@use "blocks/firstscreen";
+@use "blocks/settings";
+@use "blocks/result";
+@use "blocks/leaderboard";
+@use "blocks/board";
 
 @import url('https://fonts.googleapis.com/css?family=Khula&display=swap');
 
@@ -16,7 +19,7 @@ h1, h2, h3, h4, h5, h6 { margin: 0;}
 html { overflow: auto;}
 
 body {
-  color: #fff;
+  color: $color-main-text;
   font-family: 'Khula', sans-serif;
   height: 100vh;
   overflow: hidden;
@@ -24,38 +27,12 @@ body {
   text-align: center;
 }
 
-
-/* First screen
-************************* */
-a {
-  color: #fff;
-  text-decoration: none;
-
-  &:hover {color: $color-hover;}
-}
-
-.start { font-size: 1.5rem;}
-
-h1 {
-  line-height: 1.4;
-  font-size: 4rem;
-  margin-bottom: 40px;
-}
-
-.selection__title {
-  line-height: 1.4;
-  font-size: 3rem;
-}
-
-
-/* General classes
-************************* */
 %screen {
   display: flex;
   position: relative;
   height: 100vh;
   width: 100vw;
-  background: linear-gradient(90deg, #29323C 0%, #485563 100%);
+  background: $color-main-bg;
 }
 
 .screen {
@@ -104,85 +81,6 @@ h1 {
   }
 }
 
-
-/* Settings screen
-************************* */
-.settings {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  justify-content: center;
-  flex-basis: 400px;
-  width: 100%;
-  max-width: 650px;
-
-  & .list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-
-
-    list-style: none;
-    padding: 0;
-
-    & li {
-      margin: 10px;
-      position: relative;
-    }
-  }
-}
-
-
-/* Board screen
-************************** */
-.timer__info {
-  position: absolute;
-  top: 4vh;
-  margin-bottom: 20px;
-
-  &.warn #time__seconds {
-    display: inline-block;
-    color: $color-warn;
-    transform: scale(0);
-    animation: pulse 1s ease infinite;
-  }
-}
-
-.hide { opacity: 0;}
-
-.primary { color: $color-text-hl;}
-
-.board {
-  @include mixins.styleBoard();
-
-  &--result {
-    @include mixins.styleBoard();
-
-    & .final__score { font-size: 3.5rem;}
-  }
-
-  &.wait { font-size: 5rem;}
-}
-
-.circle {
-  position: absolute;
-  border-radius: 50%;
-  cursor: pointer;
-
-  &.clicked {
-    &::after {
-      content: "";
-      position: absolute;
-
-      border: 2px solid rgb(98, 175, 98);
-      border-radius: 50%;
-      background-color: #333d49;
-
-      animation: circleRemove .2s linear forwards;
-    }
-  }
-}
-
 @media (max-width: 1450px) {
   .column {
     &__left {
@@ -228,7 +126,7 @@ h1 {
       align-items: center;
       justify-content: center;
 
-      background: linear-gradient(90deg, #29323C 0%, #485563 100%);
+      background: $color-mask-bg;
       opacity: .97;
 
       &--disabled {
@@ -238,9 +136,10 @@ h1 {
   }
 }
 
-
 @media (max-width: 775px) {
   html { font-size: 12px;}
+
+  .btn--back { top: 17vh;}
 
   .settings .list {
     justify-content: space-evenly;

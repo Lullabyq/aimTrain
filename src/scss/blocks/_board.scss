@@ -1,0 +1,50 @@
+@use "variables" as *;
+@use "mixins";
+
+.timer__info {
+  position: absolute;
+  top: 4vh;
+  margin-bottom: 20px;
+
+  &.warn #time__seconds {
+    display: inline-block;
+    color: $color-warn;
+    transform: scale(0);
+    animation: pulse 1s ease infinite;
+  }
+}
+
+.hide { opacity: 0;}
+
+.primary { color: $color-main-hl;}
+
+.board {
+  @include mixins.styleBoard();
+
+  &--result {
+    @include mixins.styleBoard();
+
+    & .final__score { font-size: 3.5rem;}
+  }
+
+  &.wait { font-size: 5rem;}
+}
+
+.circle {
+  position: absolute;
+  border-radius: 50%;
+  cursor: pointer;
+
+  &.clicked {
+    &::after {
+      content: "";
+      position: absolute;
+
+      border: 2px solid $color-circle-border;
+      border-radius: 50%;
+      background-color: #333d49;
+
+      animation: circleRemove .2s linear forwards;
+    }
+  }
+}

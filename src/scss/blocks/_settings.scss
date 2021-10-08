@@ -1,0 +1,24 @@
+.settings {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-basis: 400px;
+  width: 100%;
+  max-width: 650px;
+
+  & .list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+
+    list-style: none;
+    padding: 0;
+
+    & li {
+      margin: 10px;
+      position: relative;
+    }
+  }
+}

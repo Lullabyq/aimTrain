@@ -1,0 +1,21 @@
+@use "variables" as *;
+
+a {
+  color: $color-main-text;
+  text-decoration: none;
+
+  &:hover {color: $color-main-hl;}
+}
+
+.start { font-size: 1.5rem;}
+
+h1 {
+  line-height: 1.4;
+  font-size: 4rem;
+  margin-bottom: 40px;
+}
+
+.selection__title {
+  line-height: 1.4;
+  font-size: 3rem;
+}
