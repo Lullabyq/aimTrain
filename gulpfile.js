@@ -21,7 +21,7 @@ const sync   = browserSync.create()
 
 function browsersync() {
     sync.init({
-        server: { baseDir: 'dist/'},
+        server: { baseDir: 'docs/'},
     })
 
     watch('src/**/*.html', series(html)).on('change', sync.reload)
@@ -37,7 +37,7 @@ function html() {
     .pipe(htmlmin({
         collapseWhitespace: true
     }))
-    .pipe(dest('dist'))
+    .pipe(dest('docs'))
 }
 
 function css() {
@@ -51,7 +51,7 @@ function css() {
                 cascade: false
             }))
         .pipe(sourcemaps.write())
-        .pipe(dest('dist/css'))
+        .pipe(dest('docs/css'))
 }
 
 function scripts() {
@@ -64,13 +64,13 @@ function scripts() {
         }
     })
     .pipe(source('index.min.js'))
-    .pipe(dest('dist/js'))
+    .pipe(dest('docs/js'))
 }
 
 export function images() {
     return src('src/imgs/**/*')
         .pipe(imagemin({verbose: true}))
-        .pipe(dest('dist/imgs'))
+        .pipe(dest('docs/imgs'))
 }
 
 
@@ -78,9 +78,9 @@ function move() {
     return src([
         'app/fonts/**/*',
     ])
-    .pipe(dest('dist/fonts'))
+    .pipe(dest('docs/fonts'))
 }
 
-export const clear = () => del('dist/**')
+export const clear = () => del('docs/**')
 export const build = series(clear, css, html, scripts, images, move)
 export default series(clear, css, html, scripts, images, move, browsersync)
